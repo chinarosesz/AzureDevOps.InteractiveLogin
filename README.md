@@ -1,9 +1,10 @@
 # Introduction
-Sample console application to interactively log user in the microsoft.com tenant and retrieve a list
-of projects from an Azure DevOps organization.
+Sample console application to interactively sign in user for the microsoft.com tenant. Once the user is 
+authenticated, the application calls Azure DevOps API to retrieve a list of projects from a specified 
+organization supplied in appsettings.json.
 
-# Instructions
-1. Run the console applicaton after cloning the repository
+# How to Run Console Application
+1. Build console application in Visual Studio after cloning the repository
 2. By default it uses my ADO organization, you can change which organization by updating appsettings.json
 
 # References

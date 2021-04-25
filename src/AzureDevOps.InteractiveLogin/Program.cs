@@ -84,7 +84,7 @@ namespace ManagedClientConsoleAppSample
         /// </summary>
         private static async Task ListProjectsAsync(string authHeader, string organization)
         {
-            // use the httpclient
+            // Setting up request
             using HttpClient client = new();
             client.BaseAddress = new Uri($"https://dev.azure.com/{organization}/");
             client.DefaultRequestHeaders.Accept.Clear();
@@ -93,10 +93,10 @@ namespace ManagedClientConsoleAppSample
             client.DefaultRequestHeaders.Add("X-TFS-FedAuthRedirect", "Suppress");
             client.DefaultRequestHeaders.Add("Authorization", authHeader);
 
-            // connect to the REST endpoint            
+            // Call API
             HttpResponseMessage response = await client.GetAsync("_apis/projects");
 
-            // check to see if we have a succesfull respond
+            // Get results
             if (response.IsSuccessStatusCode)
             {
                 Console.WriteLine($"Retrieved projects successfully for {client.BaseAddress}:");
