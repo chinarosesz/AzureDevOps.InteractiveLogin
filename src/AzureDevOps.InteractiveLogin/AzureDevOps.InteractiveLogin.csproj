@@ -3,8 +3,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <RootNamespace>ManagedClientConsoleAppSample</RootNamespace>
-    <AssemblyName>ManagedClientConsoleAppSample</AssemblyName>
+    <RootNamespace>AzureDevOps.InteractiveLogin</RootNamespace>
+    <AssemblyName>AzureDevOps.InteractiveLogin</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />

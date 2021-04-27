@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace ManagedClientConsoleAppSample
+namespace AzureDevOps.InteractiveLogin
 {
     public class Program
     {
@@ -45,9 +45,8 @@ namespace ManagedClientConsoleAppSample
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Something went wrong.");
-                Console.WriteLine("Message: " + ex + "\n");
+                Console.WriteLine($"Message: {ex}");
             }
-            Console.ReadLine();
         }
        
         /// <summary>
@@ -63,17 +62,24 @@ namespace ManagedClientConsoleAppSample
 
             AuthenticationResult result;
 
-            try
+            IEnumerable<IAccount> accounts = await application.GetAccountsAsync();
+            if (accounts.Any())
             {
-                IEnumerable<IAccount> accounts = await application.GetAccountsAsync();
                 result = await application.AcquireTokenSilent(scopes, accounts.FirstOrDefault()).ExecuteAsync();
             }
-            catch (MsalUiRequiredException ex)
+            else
             {
-                // If the token has expired, prompt the user with a login prompt
-                result = await application.AcquireTokenInteractive(scopes)
-                        .WithClaims(ex.Claims)
-                        .ExecuteAsync();
+                try
+                {
+                    result = await application.AcquireTokenByIntegratedWindowsAuth(scopes).ExecuteAsync();
+                }
+                catch (MsalUiRequiredException ex)
+                {
+                    // If the token has expired, prompt the user with a login prompt
+                    result = await application.AcquireTokenInteractive(scopes)
+                            .WithClaims(ex.Claims)
+                            .ExecuteAsync();
+                }
             }
 
             return result;
