@@ -34,6 +34,7 @@ namespace AzureDevOps.InteractiveLogin
             try
             {
                 AuthenticationResult authResult = await SignInUserAndGetTokenUsingMSAL(scopes);
+                Console.WriteLine($"Your access token is: {authResult.AccessToken}\r\n");
 
                 // Create authorization header of the form "Bearer {AccessToken}"
                 string authHeader = authResult.CreateAuthorizationHeader();
