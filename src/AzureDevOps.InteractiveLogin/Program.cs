@@ -55,31 +55,22 @@ namespace AzureDevOps.InteractiveLogin
         private static async Task<AuthenticationResult> SignInUserAndGetTokenUsingMSAL(string[] scopes)
         {
             // Initialize the MSAL library by building a public client application
-            application = PublicClientApplicationBuilder.Create(clientId).
-                WithAuthority(authority).
-                WithDefaultRedirectUri().
-                Build();
+            application = PublicClientApplicationBuilder.Create(clientId).WithAuthority(authority).WithDefaultRedirectUri().Build();
+            TokenCacheHelper.EnableSerialization(application.UserTokenCache);
 
             AuthenticationResult result;
 
             IEnumerable<IAccount> accounts = await application.GetAccountsAsync();
-            if (accounts.Any())
+            try 
             {
                 result = await application.AcquireTokenSilent(scopes, accounts.FirstOrDefault()).ExecuteAsync();
             }
-            else
+            catch (MsalUiRequiredException ex)
             {
-                try
-                {
-                    result = await application.AcquireTokenByIntegratedWindowsAuth(scopes).ExecuteAsync();
-                }
-                catch (MsalUiRequiredException ex)
-                {
-                    // If the token has expired, prompt the user with a login prompt
-                    result = await application.AcquireTokenInteractive(scopes)
-                            .WithClaims(ex.Claims)
-                            .ExecuteAsync();
-                }
+                // If the token has expired, prompt the user with a login prompt
+                result = await application.AcquireTokenInteractive(scopes)
+                        .WithClaims(ex.Claims)
+                        .ExecuteAsync();
             }
 
             return result;
