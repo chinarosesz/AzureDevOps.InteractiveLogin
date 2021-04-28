@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AzureDevOps.InteractiveLogin": {
+      "commandName": "Project",
+      "commandLineArgs": "--organization litra"
+    }
+  }
+}

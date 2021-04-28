@@ -1,5 +1,6 @@
 ﻿using Microsoft.Identity.Client;
 using System.IO;
+using System.Reflection;
 using System.Security.Cryptography;
 
 namespace AzureDevOps.InteractiveLogin
@@ -20,10 +21,9 @@ namespace AzureDevOps.InteractiveLogin
         /// private static readonly string CacheFilePath =
         /// $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\{AppName}\msalcache.bin";
         /// </summary>
-        public static readonly string CacheFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location + ".msalcache.bin3";
+        public static readonly string CacheFilePath = Assembly.GetExecutingAssembly().Location + ".msalcache.bin3";
 
         private static readonly object FileLock = new object();
-
 
         private static void BeforeAccessNotification(TokenCacheNotificationArgs args)
         {

@@ -27,9 +27,9 @@ namespace AzureDevOps.InteractiveLogin
 
         public static async Task Main(string[] args)
         {
-            // Retrieve organization value from appsettings.json
-            IConfigurationRoot configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            string organization = configuration["organization"];
+            // Parse command line
+            CommandOptions parsedOptions = CommandOptions.ParseArguments(args);
+            if (parsedOptions == null) { return; }
 
             try
             {
@@ -40,7 +40,7 @@ namespace AzureDevOps.InteractiveLogin
                 string authHeader = authResult.CreateAuthorizationHeader();
 
                 // Finally call Azure DevOps to list all projects from organization
-                await ListProjectsAsync(authHeader, organization);
+                await ListProjectsAsync(authHeader, parsedOptions.Organization);
             }
             catch (Exception ex)
             {
